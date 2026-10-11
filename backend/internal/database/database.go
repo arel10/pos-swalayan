@@ -17,20 +17,31 @@ import (
 	"github.com/arel10/pos-swalayan/internal/modules/units"
 	"github.com/arel10/pos-swalayan/internal/modules/users"
 	"golang.org/x/crypto/bcrypt"
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
 
 // Connect creates a new database connection using environment variables.
 func Connect() (*gorm.DB, error) {
+	port := os.Getenv("DB_PORT")
+	if port == "" {
+		port = "5432"
+	}
+
+	sslMode := os.Getenv("DB_SSLMODE")
+	if sslMode == "" {
+		sslMode = "disable"
+	}
+
 	dsn := fmt.Sprintf(
-		"%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=Asia/Jakarta",
+		os.Getenv("DB_HOST"),
 		os.Getenv("DB_USER"),
 		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_PORT"),
 		os.Getenv("DB_NAME"),
+		port,
+		sslMode,
 	)
 
 	logLevel := logger.Silent
@@ -38,14 +49,14 @@ func Connect() (*gorm.DB, error) {
 		logLevel = logger.Info
 	}
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logLevel),
 		NowFunc: func() time.Time {
 			return time.Now().Local()
 		},
 	})
 	if err != nil {
-		return nil, fmt.Errorf("connecting to mysql: %w", err)
+		return nil, fmt.Errorf("connecting to postgresql: %w", err)
 	}
 
 	sqlDB, err := db.DB()

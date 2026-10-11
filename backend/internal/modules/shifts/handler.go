@@ -17,7 +17,7 @@ import (
 type CashierShift struct {
 	ID               uint       `gorm:"primaryKey" json:"id"`
 	CashierID        uint       `gorm:"not null;index" json:"cashier_id"`
-	Status           string     `gorm:"type:enum('OPEN','CLOSED');default:'OPEN'" json:"status"`
+	Status           string     `gorm:"size:20;default:'OPEN'" json:"status"`
 	OpeningCash      float64    `gorm:"type:decimal(15,2);default:0" json:"opening_cash"`
 	ExpectedCash     float64    `gorm:"type:decimal(15,2);default:0" json:"expected_cash"`
 	ActualCash       float64    `gorm:"type:decimal(15,2);default:0" json:"actual_cash"`

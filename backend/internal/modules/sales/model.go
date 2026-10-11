@@ -10,7 +10,7 @@ type Sale struct {
 	SaleNumber     string    `gorm:"uniqueIndex;size:50;not null" json:"sale_number"`
 	CashierID      uint      `gorm:"not null" json:"cashier_id"`
 	ShiftID        uint      `json:"shift_id"`
-	Status         string    `gorm:"type:enum('COMPLETED','VOID','REFUNDED');default:'COMPLETED'" json:"status"`
+	Status         string    `gorm:"size:20;default:'COMPLETED'" json:"status"`
 	TotalAmount    float64   `gorm:"type:decimal(15,2)" json:"total_amount"`
 	DiscountAmount float64   `gorm:"type:decimal(15,2);default:0" json:"discount_amount"`
 	FinalAmount    float64   `gorm:"type:decimal(15,2)" json:"final_amount"`
@@ -42,7 +42,7 @@ type SaleItem struct {
 type Payment struct {
 	ID            uint      `gorm:"primaryKey" json:"id"`
 	SaleID        uint      `gorm:"uniqueIndex;not null" json:"sale_id"`
-	Method        string    `gorm:"type:enum('CASH','QRIS','DEBIT','TRANSFER');default:'CASH'" json:"method"`
+	Method        string    `gorm:"size:20;default:'CASH'" json:"method"`
 	Amount        float64   `gorm:"type:decimal(15,2);not null" json:"amount"`
 	ChangeAmount  float64   `gorm:"type:decimal(15,2);default:0" json:"change_amount"`
 	CreatedAt     time.Time `json:"created_at"`

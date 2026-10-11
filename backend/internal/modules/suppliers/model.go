@@ -9,7 +9,7 @@ type Supplier struct {
 	Phone     string    `gorm:"size:50" json:"phone"`
 	Email     string    `gorm:"size:100" json:"email"`
 	Address   string    `gorm:"type:text" json:"address"`
-	Status    string    `gorm:"type:enum('ACTIVE','INACTIVE');default:'ACTIVE'" json:"status"`
+	Status    string    `gorm:"size:20;default:'ACTIVE'" json:"status"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }

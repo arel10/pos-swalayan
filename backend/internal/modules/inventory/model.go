@@ -11,7 +11,7 @@ import (
 type StockMovement struct {
 	ID            uint      `gorm:"primaryKey" json:"id"`
 	ProductID     uint      `gorm:"not null;index" json:"product_id"`
-	Type          string    `gorm:"type:enum('IN','OUT','ADJUSTMENT');not null" json:"type"`
+	Type          string    `gorm:"size:20;not null" json:"type"`
 	Quantity      float64   `gorm:"type:decimal(15,3);not null" json:"quantity"`
 	StockBefore   float64   `gorm:"type:decimal(15,3)" json:"stock_before"`
 	StockAfter    float64   `gorm:"type:decimal(15,3)" json:"stock_after"`

@@ -19,7 +19,7 @@ type User struct {
 	Password  string    `gorm:"not null" json:"-"`
 	RoleID    uint      `gorm:"not null" json:"role_id"`
 	Role      *Role     `gorm:"foreignKey:RoleID" json:"role,omitempty"`
-	Status    string    `gorm:"type:enum('ACTIVE','INACTIVE');default:'ACTIVE'" json:"status"`
+	Status    string    `gorm:"size:20;default:'ACTIVE'" json:"status"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }

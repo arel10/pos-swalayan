@@ -42,13 +42,18 @@ func (s *Service) SalesReport(startDate, endDate string) ([]SalesReportRow, erro
 	var rows []SalesReportRow
 	err := s.db.Raw(`
 		SELECT
-			DATE(created_at) as date,
-			COALESCE(SUM(final_amount), 0) as total_sales,
-			COUNT(*) as transactions,
-			COALESCE((SELECT SUM(si.quantity) FROM sale_items si WHERE si.sale_id = sales.id), 0) as items_sold
-		FROM sales
-		WHERE status = 'COMPLETED' AND DATE(created_at) BETWEEN ? AND ?
-		GROUP BY DATE(created_at)
+			DATE(s.created_at) as date,
+			COALESCE(SUM(s.final_amount), 0) as total_sales,
+			COUNT(DISTINCT s.id) as transactions,
+			COALESCE(SUM(items.total_qty), 0) as items_sold
+		FROM sales s
+		LEFT JOIN (
+			SELECT sale_id, SUM(quantity) as total_qty
+			FROM sale_items
+			GROUP BY sale_id
+		) items ON items.sale_id = s.id
+		WHERE s.status = 'COMPLETED' AND DATE(s.created_at) BETWEEN ? AND ?
+		GROUP BY DATE(s.created_at)
 		ORDER BY date DESC
 	`, startDate, endDate).Scan(&rows).Error
 	return rows, err

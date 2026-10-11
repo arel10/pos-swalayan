@@ -9,7 +9,7 @@ type Purchase struct {
 	ID             uint           `gorm:"primaryKey" json:"id"`
 	PurchaseNumber string         `gorm:"uniqueIndex;size:50;not null" json:"purchase_number"`
 	SupplierID     uint           `gorm:"not null" json:"supplier_id"`
-	Status         string         `gorm:"type:enum('DRAFT','RECEIVED','CANCELLED');default:'DRAFT'" json:"status"`
+	Status         string         `gorm:"size:20;default:'DRAFT'" json:"status"`
 	TotalAmount    float64        `gorm:"type:decimal(15,2);default:0" json:"total_amount"`
 	Notes          string         `gorm:"type:text" json:"notes"`
 	ReceivedAt     *time.Time     `json:"received_at"`

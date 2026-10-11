@@ -16,7 +16,7 @@ type Product struct {
 	SellPrice    float64   `gorm:"type:decimal(15,2);not null" json:"sell_price"`
 	Stock        float64   `gorm:"type:decimal(15,3);default:0" json:"stock"`
 	MinStock     float64   `gorm:"type:decimal(15,3);default:0" json:"min_stock"`
-	Status       string    `gorm:"type:enum('ACTIVE','INACTIVE');default:'ACTIVE'" json:"status"`
+	Status       string    `gorm:"size:20;default:'ACTIVE'" json:"status"`
 	Description  string    `gorm:"type:text" json:"description"`
 	CreatedAt    time.Time `json:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at"`
