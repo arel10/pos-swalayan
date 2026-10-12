@@ -6,8 +6,9 @@ import (
 	"os"
 
 	"github.com/arel10/pos-swalayan/internal/database"
-	"github.com/arel10/pos-swalayan/internal/modules/auth"
+	"github.com/arel10/pos-swalayan/internal/middleware"
 	"github.com/arel10/pos-swalayan/internal/modules/audit"
+	"github.com/arel10/pos-swalayan/internal/modules/auth"
 	"github.com/arel10/pos-swalayan/internal/modules/categories"
 	"github.com/arel10/pos-swalayan/internal/modules/dashboard"
 	"github.com/arel10/pos-swalayan/internal/modules/inventory"
@@ -54,6 +55,9 @@ func main() {
 
 	// Trust proxies
 	r.SetTrustedProxies(nil)
+
+	// Global CORS middleware — must be registered before route groups
+	r.Use(middleware.CORS())
 
 	// API v1 group
 	api := r.Group("/api/v1")
